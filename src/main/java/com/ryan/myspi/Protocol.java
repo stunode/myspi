@@ -10,7 +10,9 @@ package com.ryan.myspi;
  */
 public interface Protocol {
 
+    // 获取协议类型
     String getProtocolType();
 
+    // 执行调用
     void invoke();
 }

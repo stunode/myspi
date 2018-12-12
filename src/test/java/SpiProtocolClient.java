@@ -3,18 +3,19 @@ import com.ryan.myspi.Protocol;
 import java.util.*;
 
 /**
- * 类名称: ProtocolTest
+ * 类名称: SpiProtocolClient
  * 功能描述:
  * 日期:  2018/12/11 22:57
  *
  * @author: renpengfei
  * @since: JDK1.8
  */
-public class ProtocolTest {
+public class SpiProtocolClient {
 
     private final static Map<String,Protocol> RPOTOCOL_LIST = new HashMap<> ();
 
     static {
+        // 使用ServiceLoader
         ServiceLoader<Protocol> serviceLoader = ServiceLoader.load (Protocol.class);
         Iterator<Protocol> iterator = serviceLoader.iterator ();
         while (iterator.hasNext ()) {
@@ -29,7 +30,7 @@ public class ProtocolTest {
      * @since JDK 1.8
      */
     public void doInvoke(String protocolType) {
-        Protocol protocol = ProtocolTest.RPOTOCOL_LIST.get (protocolType);
+        Protocol protocol = SpiProtocolClient.RPOTOCOL_LIST.get (protocolType);
         if (protocol != null) {
             protocol.invoke ();
         }
@@ -37,9 +38,8 @@ public class ProtocolTest {
 
     public static void main(String[] args) {
 
-        ProtocolTest protocolTest = new ProtocolTest ();
-        protocolTest.doInvoke ("dubbo");
-        protocolTest.doInvoke ("hessian");
-
+        SpiProtocolClient spiProtocolClient = new SpiProtocolClient ();
+        spiProtocolClient.doInvoke ("dubbo");
+        spiProtocolClient.doInvoke ("hessian");
     }
 }

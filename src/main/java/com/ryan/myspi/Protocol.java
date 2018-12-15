@@ -1,5 +1,7 @@
 package com.ryan.myspi;
 
+import com.ryan.SPI;
+
 /**
  * 类名称: Protocal
  * 功能描述:
@@ -8,6 +10,7 @@ package com.ryan.myspi;
  * @author: renpengfei
  * @since: JDK1.8
  */
+@SPI("dubbo")
 public interface Protocol {
 
     // 获取协议类型

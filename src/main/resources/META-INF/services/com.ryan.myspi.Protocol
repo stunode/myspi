@@ -1,2 +1,2 @@
-com.ryan.myspi.DubboProtocol
-com.ryan.myspi.HessianProtocol
+dubbo=com.ryan.myspi.DubboProtocol
+hession=com.ryan.myspi.HessianProtocol

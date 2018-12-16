@@ -10,6 +10,7 @@ package com.ryan.utils;
  */
 public class Holder<T> {
 
+    // 保证可见性
     private volatile T value;
 
     public T get() {

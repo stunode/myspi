@@ -18,7 +18,8 @@ public class DubboProtocol implements Protocol {
     }
 
     @Override
-    public void invoke() {
+    public String invoke() {
         System.out.println ("this is dubbo protocol ");
+        return "dubbo_protocol";
     }
 }

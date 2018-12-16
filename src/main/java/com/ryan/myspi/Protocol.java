@@ -17,5 +17,5 @@ public interface Protocol {
     String getProtocolType();
 
     // 执行调用
-    void invoke();
+    String invoke();
 }

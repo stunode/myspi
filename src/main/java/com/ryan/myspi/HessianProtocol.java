@@ -18,7 +18,8 @@ public class HessianProtocol implements Protocol {
     }
 
     @Override
-    public void invoke() {
+    public String invoke() {
         System.out.println ("this is hessian protocol ");
+        return "hessian_protocol";
     }
 }

@@ -1,6 +1,11 @@
+import com.ryan.myspi.ExtensionLoader;
 import com.ryan.myspi.Protocol;
+import com.ryan.myspi.ext1.Ext1;
+import org.junit.Test;
 
 import java.util.*;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * 类名称: SpiProtocolClient
@@ -14,15 +19,15 @@ public class SpiProtocolClient {
 
     private final static Map<String,Protocol> RPOTOCOL_LIST = new HashMap<> ();
 
-    static {
-        // 使用ServiceLoader
-        ServiceLoader<Protocol> serviceLoader = ServiceLoader.load (Protocol.class);
-        Iterator<Protocol> iterator = serviceLoader.iterator ();
-        while (iterator.hasNext ()) {
-            Protocol itr = iterator.next ();
-            RPOTOCOL_LIST.put (itr.getProtocolType (), itr);
-        }
-    }
+//    static {
+//        // 使用ServiceLoader
+//        ServiceLoader<Protocol> serviceLoader = ServiceLoader.load (Protocol.class);
+//        Iterator<Protocol> iterator = serviceLoader.iterator ();
+//        while (iterator.hasNext ()) {
+//            Protocol itr = iterator.next ();
+//            RPOTOCOL_LIST.put (itr.getProtocolType (), itr);
+//        }
+//    }
 
     /**
      * 描述：调用相关协议
@@ -34,6 +39,19 @@ public class SpiProtocolClient {
         if (protocol != null) {
             protocol.invoke ();
         }
+    }
+
+    @Test
+    public void invokeExtension(){
+        Protocol protocol = ExtensionLoader.getExtensionLoader (Protocol.class).getExtension ("dubbo");
+        String echo = protocol.invoke ();
+        assertEquals("dubbo_protocol", echo);
+    }
+
+    @Test
+    public void injectExtension(){
+        Ext1 ext1 = ExtensionLoader.getExtensionLoader (Ext1.class).getExtension ("ext1Impl1");
+        assertEquals ("hessian_protocol",ext1.echo ());
     }
 
     public static void main(String[] args) {

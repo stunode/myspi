@@ -1,5 +1,7 @@
+import com.ryan.common.URL;
 import com.ryan.myspi.ExtensionLoader;
 import com.ryan.myspi.Protocol;
+import com.ryan.myspi.adaptive.SimpleExt;
 import com.ryan.myspi.ext1.Ext1;
 import org.junit.Test;
 
@@ -52,6 +54,22 @@ public class SpiProtocolClient {
     public void injectExtension(){
         Ext1 ext1 = ExtensionLoader.getExtensionLoader (Ext1.class).getExtension ("ext1Impl1");
         assertEquals ("hessian_protocol",ext1.echo ());
+    }
+
+    @Test
+    public void getAdaptiveExtension(){
+        SimpleExt ext = ExtensionLoader.getExtensionLoader(SimpleExt.class).getAdaptiveExtension();
+
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("key2", "impl2");
+        URL url = new URL("p1", "1.2.3.4", 1010, "path1", map);
+
+        String echo = ext.yell(url, "haha");
+        assertEquals("Ext1Impl2-yell", echo);
+
+        url = url.addParameter("key1", "impl3"); // note: URL is value's type
+        echo = ext.yell(url, "haha");
+        assertEquals("Ext1Impl3-yell", echo);
     }
 
     public static void main(String[] args) {

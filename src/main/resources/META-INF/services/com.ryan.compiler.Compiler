@@ -1,0 +1,3 @@
+adaptive=com.ryan.compiler.support.AdaptiveCompiler
+jdk=com.ryan.compiler.support.JdkCompiler
+javassist=com.ryan.compiler.support.JavassistCompiler

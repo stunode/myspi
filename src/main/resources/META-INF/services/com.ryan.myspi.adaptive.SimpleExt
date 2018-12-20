@@ -1,0 +1,5 @@
+impl1=com.ryan.myspi.adaptive.impl.SimpleExtImpl1
+impl2=com.ryan.myspi.adaptive.impl.SimpleExtImpl2
+impl3=com.ryan.myspi.adaptive.impl.SimpleExtImpl3
+adaptive=com.ryan.myspi.adaptive.impl.SimpleExt$Adaptive
+

@@ -1,2 +1,2 @@
+adaptive=com.ryan.myspi.support.impl.AdaptiveExtensionFactory
 spi=com.ryan.myspi.support.impl.SpiExtensionFactory
-

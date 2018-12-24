@@ -35,7 +35,7 @@ public class ClassHelper {
      */
     private static final Map<String, Class<?>> primitiveTypeNameMap = new HashMap<String, Class<?>>(16);
     /**
-     * Map with primitive wrapper type as key and corresponding primitive type
+     * Map with primitive ext_wrapper type as key and corresponding primitive type
      * as value, for example: Integer.class -> int.class.
      */
     private static final Map<Class<?>, Class<?>> primitiveWrapperTypeMap = new HashMap<Class<?>, Class<?>>(8);

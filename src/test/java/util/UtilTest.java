@@ -69,15 +69,4 @@ public class UtilTest {
         System.out.println (pkg);
     }
 
-
-    @Test
-    public void testNewInstance(){
-        try {
-            ConstructTest instance = ConstructTest.class.newInstance ();
-//            WithoutNoParamsConstruct test = new WithoutNoParamsConstruct ();
-            instance.test ();
-        } catch (Throwable e) {
-            System.out.println (e.getMessage ());
-        }
-    }
 }

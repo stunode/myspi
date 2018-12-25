@@ -1,3 +1,2 @@
 impl=com.ryan.ext_wrapper.CoreFuncImpl
-logger=com.ryan.ext_wrapper.CoreFuncLoggerWrapper
-transaction=com.ryan.ext_wrapper.CoreFuncTransactionWrapper
+count=com.ryan.ext_wrapper.CoreFuncCountWrapper

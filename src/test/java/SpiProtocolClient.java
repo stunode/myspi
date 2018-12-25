@@ -1,8 +1,10 @@
 import com.ryan.common.URL;
+import com.ryan.ext_activate.ExportListener;
 import com.ryan.myspi.ExtensionLoader;
 import com.ryan.myspi.Protocol;
 import com.ryan.myspi.adaptive.SimpleExt;
 import com.ryan.myspi.ext1.Ext1;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.*;
@@ -72,10 +74,9 @@ public class SpiProtocolClient {
         assertEquals("Ext1Impl3-yell", echo);
     }
 
-    public static void main(String[] args) {
-
-        SpiProtocolClient spiProtocolClient = new SpiProtocolClient ();
-        spiProtocolClient.doInvoke ("dubbo");
-        spiProtocolClient.doInvoke ("hessian");
+    @Test
+    public void getActivateExtensions(){
+        List<ExportListener> exts = ExtensionLoader.getExtensionLoader(ExportListener.class).getActivateExtensions();
+        Assert.assertEquals(2,exts.size());
     }
 }

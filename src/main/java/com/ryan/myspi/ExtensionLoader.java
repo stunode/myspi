@@ -1,5 +1,6 @@
 package com.ryan.myspi;
 
+import com.ryan.Activate;
 import com.ryan.Adaptive;
 import com.ryan.SPI;
 import com.ryan.common.URL;
@@ -63,8 +64,10 @@ public class ExtensionLoader<T> {
     // 不包含自适应扩展点实现类
     private final ConcurrentMap<String, Holder<Object>> cachedInstances = new ConcurrentHashMap<String, Holder<Object>>();
 
-    // AOP包装类型集合,有可能不存在，不用初始化
+    // AOP包装类型集合
     private Set<Class<?>> cachedWrapperClasses;
+
+    private final Map<String, Object> cachedActivates = new ConcurrentHashMap<>();
 
     private static final String FILE_PATH_PREFIX = "META-INF/services/";
 
@@ -159,6 +162,37 @@ public class ExtensionLoader<T> {
         return (T) instance;
     }
 
+    public List<T> getActivateExtensions() {
+        List<T> exts = new ArrayList<>();
+        getExtensionClasses();
+        // 获取激活扩展点缓存中的所有扩展点，并返回集合
+        for (Map.Entry<String, Object> entry : cachedActivates.entrySet()) {
+            String name = entry.getKey();
+            Object activate = entry.getValue();
+            if (activate instanceof Activate) {
+                // 获取扩展点实例
+                T ext = getExtension(name);
+                // 放入结果集合中
+                exts.add(ext);
+            }
+        }
+        return exts;
+    }
+
+    public Set<String> getSupportedExtensions() {
+        Map<String, Class<?>> clazzes = getExtensionClasses();
+        return Collections.unmodifiableSet(new TreeSet<String>(clazzes.keySet()));
+    }
+
+    public T getDefaultExtension() {
+        getExtensionClasses();
+        if (null == cachedDefaultName || cachedDefaultName.length() == 0
+                || "true".equals(cachedDefaultName)) {
+            return null;
+        }
+        return getExtension(cachedDefaultName);
+    }
+
     // 新增经过注入的扩展类
     @SuppressWarnings("unchecked")
     public T createExtension(String name) {
@@ -187,20 +221,6 @@ public class ExtensionLoader<T> {
         } catch (Throwable e) {
             throw new IllegalArgumentException(" clazz " + type + " newInstance error");
         }
-    }
-
-    public Set<String> getSupportedExtensions() {
-        Map<String, Class<?>> clazzes = getExtensionClasses();
-        return Collections.unmodifiableSet(new TreeSet<String>(clazzes.keySet()));
-    }
-
-    public T getDefaultExtension() {
-        getExtensionClasses();
-        if (null == cachedDefaultName || cachedDefaultName.length() == 0
-                || "true".equals(cachedDefaultName)) {
-            return null;
-        }
-        return getExtension(cachedDefaultName);
     }
 
     private T injectExtension(T instance) {
@@ -364,6 +384,13 @@ public class ExtensionLoader<T> {
             }
             cachedWrapperClasses.add(clazz);
         } else {
+            if (clazz.isAnnotationPresent(Activate.class)) {
+                Activate activate = clazz.getAnnotation(Activate.class);
+                // 有Activate注解的类，加入缓存
+                if (name != null) {
+                    cachedActivates.put(name, activate);
+                }
+            }
             extensionClasses.put(name, clazz);
         }
     }

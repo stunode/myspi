@@ -6,6 +6,7 @@ import com.ryan.myspi.adaptive.SimpleExt;
 import com.ryan.myspi.ext1.Ext1;
 import org.junit.Assert;
 import org.junit.Test;
+import sun.rmi.transport.Transport;
 
 import java.util.*;
 
@@ -79,4 +80,5 @@ public class SpiProtocolClient {
         List<ExportListener> exts = ExtensionLoader.getExtensionLoader(ExportListener.class).getActivateExtensions();
         Assert.assertEquals(2,exts.size());
     }
+
 }

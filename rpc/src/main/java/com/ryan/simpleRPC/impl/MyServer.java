@@ -1,5 +1,8 @@
 package com.ryan.simpleRPC.impl;
 
+import com.ryan.myspi.ExtensionLoader;
+import com.ryan.remote.api.Transporter;
+import com.ryan.remote.netty.NettyTransporter;
 import com.ryan.simpleRPC.ServerHandler;
 
 import java.util.ArrayList;
@@ -38,17 +41,25 @@ public class MyServer implements com.ryan.simpleRPC.RPCServer {
     }
 
     @Override
-    public void export() {
+    public synchronized void export() {
 
-        if (service == null) {
-            throw new IllegalArgumentException("service is null");
-        }
-        if (port < 0 || port > 65535) {
-            throw new IllegalArgumentException("port is invalid, port is:" + port);
-        }
-        System.out.println("export service :" + service.getClass().getName() + "on port:" + port);
+//        if (service == null) {
+//            throw new IllegalArgumentException("service is null");
+//        }
+//        if (port < 0 || port > 65535) {
+//            throw new IllegalArgumentException("port is invalid, port is:" + port);
+//        }
+//        System.out.println("export service :" + service.getClass().getName() + "on port:" + port);
+//
+//        serverHandler.handle(service, port);
 
-        serverHandler.handle(service, port);
+        Transporter transporter = ExtensionLoader.getExtensionLoader(Transporter.class).getDefaultExtension();
+        try {
+            transporter.bind(port);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     public Object getService() {

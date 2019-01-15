@@ -4,9 +4,7 @@ import com.ryan.simpleRPC.ServerHandler;
 import com.ryan.simpleRPC.impl.MyClient;
 import com.ryan.simpleRPC.impl.MyHandler;
 import com.ryan.simpleRPC.impl.MyServer;
-import com.sun.security.ntlm.Server;
 import org.junit.Test;
-import rpc.impl.TestServiceImpl;
 
 /**
  * 类名称: MyServerTest
@@ -24,7 +22,7 @@ public class MyServerTest {
 
         MyServer myServer = new MyServer(serverHandler);
         myServer.setPort(6666);
-        myServer.setService(new TestServiceImpl());
+//        myServer.setService(new TestServiceImpl());
         myServer.export();
 
     }
@@ -32,8 +30,8 @@ public class MyServerTest {
     @Test
     public void clientRefer(){
         MyClient client = new MyClient();
-        ITestService testService = client.refer(ITestService.class, "127.0.0.1", 6666);
+//        ITestService testService = client.refer(ITestService.class, "127.0.0.1", 6666);
 
-        testService.rpcEcho();
+//        testService.rpcEcho();
     }
 }

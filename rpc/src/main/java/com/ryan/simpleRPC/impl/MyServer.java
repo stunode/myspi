@@ -1,7 +1,10 @@
 package com.ryan.simpleRPC.impl;
 
 import com.ryan.myspi.ExtensionLoader;
+import com.ryan.remote.api.Channel;
+import com.ryan.remote.api.ChannelHandler;
 import com.ryan.remote.api.Transporter;
+import com.ryan.remote.api.transport.ChannelHandlerAdapter;
 import com.ryan.remote.netty.NettyTransporter;
 import com.ryan.simpleRPC.ServerHandler;
 
@@ -55,7 +58,7 @@ public class MyServer implements com.ryan.simpleRPC.RPCServer {
 
         Transporter transporter = ExtensionLoader.getExtensionLoader(Transporter.class).getDefaultExtension();
         try {
-            transporter.bind(port);
+            transporter.bind(port, new ChannelHandlerAdapter());
         } catch (Exception e) {
             e.printStackTrace();
         }

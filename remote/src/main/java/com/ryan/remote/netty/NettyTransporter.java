@@ -1,5 +1,6 @@
 package com.ryan.remote.netty;
 
+import com.ryan.remote.api.ChannelHandler;
 import com.ryan.remote.api.Server;
 import com.ryan.remote.api.Transporter;
 
@@ -12,8 +13,14 @@ import com.ryan.remote.api.Transporter;
  * @since: JDK1.8
  */
 public class NettyTransporter implements Transporter {
+
+
+
     @Override
-    public Server bind(int port) throws Exception {
-        return new NettyServer(port);
+    public Server bind(int port, ChannelHandler listener) throws Exception {
+        return new NettyServer(port,listener);
     }
+
+
+
 }

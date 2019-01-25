@@ -1,5 +1,7 @@
 package com.ryan.remote.netty;
 
+import com.ryan.remote.api.Channel;
+import com.ryan.remote.api.ChannelHandler;
 import com.ryan.remote.api.Server;
 import com.ryan.remote.api.transport.AbstractServer;
 import io.netty.bootstrap.ServerBootstrap;
@@ -11,6 +13,7 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.util.concurrent.DefaultThreadFactory;
 
 /**
@@ -29,8 +32,8 @@ public class NettyServer extends AbstractServer implements Server {
 
     private EventLoopGroup workerGroup;
 
-    public NettyServer(int port) throws Exception {
-        super(port);
+    public NettyServer(int port, ChannelHandler handler) throws Exception {
+        super(port,handler);
     }
 
     @Override
@@ -38,14 +41,17 @@ public class NettyServer extends AbstractServer implements Server {
         bootstrap = new ServerBootstrap();
         workerGroup = new NioEventLoopGroup();
         bossGroup = new NioEventLoopGroup(1, new DefaultThreadFactory("NettyServerBoss", true)); // (1)
-        final NettyServerHandler serverHandler = new NettyServerHandler();
         try {
             bootstrap.group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class) // (3)
                     .childHandler(new ChannelInitializer<SocketChannel>() { // (4)
                         @Override
                         public void initChannel(SocketChannel ch) throws Exception {
-                            ch.pipeline().addLast(serverHandler);
+                            NettyCodecAdapter adapter = new NettyCodecAdapter(getCodec(), NettyServer.this);
+                            // 绑定编解码
+                            ch.pipeline().addLast("decoder", adapter.getDecoder());
+                            // 绑定handler
+                            ch.pipeline().addLast(new NettyServerHandler(getChannelHandler()));
                         }
                     })
                     .option(ChannelOption.SO_BACKLOG, 128)          // (5)
@@ -70,6 +76,7 @@ public class NettyServer extends AbstractServer implements Server {
             e.printStackTrace();
         }
     }
+
 
 
 }

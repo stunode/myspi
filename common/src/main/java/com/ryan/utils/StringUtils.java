@@ -763,7 +763,7 @@ public final class StringUtils {
 //            } else {
 //                try {
 //                    buf.append(JSON.toJSONString(arg));
-//                } catch (Exception e) {
+//                } catch (exception e) {
 //                    logger.warn(e.getMessage(), e);
 //                    buf.append(arg);
 //                }

@@ -1,5 +1,7 @@
 package com.ryan.remote.api;
 
+import java.rmi.RemoteException;
+
 /**
  * 类名称: Endpoint
  * 功能描述:
@@ -10,7 +12,9 @@ package com.ryan.remote.api;
  */
 public interface Endpoint {
 
-    void send(Object message);
+    void send(Object message) throws RemoteException;
 
     void close();
+
+    ChannelHandler getChannelHandler();
 }

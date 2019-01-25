@@ -1,6 +1,8 @@
 package com.ryan.remote.netty;
 
+import com.ryan.remote.api.transport.AbstractChannel;
 import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.ReferenceCountUtil;
@@ -13,19 +15,22 @@ import io.netty.util.ReferenceCountUtil;
  * @author: renpengfei
  * @since: JDK1.8
  */
+@ChannelHandler.Sharable
 public class NettyServerHandler extends ChannelInboundHandlerAdapter {
+
+    private com.ryan.remote.api.ChannelHandler ch;
+
+    public NettyServerHandler(com.ryan.remote.api.ChannelHandler ch) {
+        this.ch = ch;
+    }
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) { // (2)
-
-        ByteBuf in = (ByteBuf) msg;
         try {
-            while (in.isReadable()) { // (1)
-                System.out.print((char) in.readByte());
-                System.out.flush();
-            }
-        } finally {
-            ReferenceCountUtil.release(msg); // (2)
+            ch.received(new AbstractChannel(),msg);
+        } catch (Exception e) {
+            e.printStackTrace();
+            ctx.close();
         }
     }
 

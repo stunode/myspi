@@ -13,7 +13,7 @@ import com.ryan.SPI;
 @SPI("netty")
 public interface Transporter {
 
-    Server bind(int port) throws Exception ;
+    Server bind(int port, ChannelHandler handler) throws Exception ;
 
     // Client connect
 }

@@ -13,7 +13,7 @@
 //        com.ryan.myspi.adaptive.SimpleExt extension = null;
 //        try {
 //            extension = (com.ryan.myspi.adaptive.SimpleExt) ExtensionLoader.getExtensionLoader (com.ryan.myspi.adaptive.SimpleExt.class).getExtension (extName);
-//        } catch (Exception e) {
+//        } catch (exception e) {
 //            extension = (com.ryan.myspi.adaptive.SimpleExt) ExtensionLoader.getExtensionLoader (com.ryan.myspi.adaptive.SimpleExt.class).getExtension ("impl1");
 //        }
 //        return extension.yell (arg0, arg1);
@@ -26,7 +26,7 @@
 //        com.ryan.myspi.adaptive.SimpleExt extension = null;
 //        try {
 //            extension = (com.ryan.myspi.adaptive.SimpleExt) ExtensionLoader.getExtensionLoader (com.ryan.myspi.adaptive.SimpleExt.class).getExtension (extName);
-//        } catch (Exception e) {
+//        } catch (exception e) {
 //            extension = (com.ryan.myspi.adaptive.SimpleExt) ExtensionLoader.getExtensionLoader (com.ryan.myspi.adaptive.SimpleExt.class).getExtension ("impl1");
 //        }
 //        return extension.echo (arg0, arg1);

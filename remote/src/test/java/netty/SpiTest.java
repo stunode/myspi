@@ -5,8 +5,6 @@ import com.ryan.remote.api.Transporter;
 import com.ryan.remote.netty.NettyTransporter;
 import org.junit.Assert;
 import org.junit.Test;
-import sun.nio.ch.Net;
-import sun.rmi.transport.Transport;
 
 /**
  * 类名称: SpiTest
@@ -25,4 +23,5 @@ public class SpiTest {
         Assert.assertEquals(NettyTransporter.class, transport.getClass());
 
     }
+
 }

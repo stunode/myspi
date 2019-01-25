@@ -607,7 +607,7 @@ public class ExtensionLoader<T> {
                         type.getName(), Arrays.toString(value));
                 code.append(s);
                 // 获取扩展实现类
-                code.append(String.format("\n%s extension = null;\n try {\nextension = (%<s)%s.getExtensionLoader(%s.class).getExtension(extName);\n}catch(Exception e){\n",
+                code.append(String.format("\n%s extension = null;\n try {\nextension = (%<s)%s.getExtensionLoader(%s.class).getExtension(extName);\n}catch(exception e){\n",
                         type.getName(), ExtensionLoader.class.getSimpleName(), type.getName()));
                 // 使用count表示，只打印一次warn日志
 //                code.append (String.format ("if (count.incrementAndGet() == 1) {\nSystem.out.println (\"Failed to find extension named \" + extName + \" for type %s, will use default extension %s instead.\", e);\n}\n",

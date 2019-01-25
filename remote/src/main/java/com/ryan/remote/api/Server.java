@@ -10,4 +10,5 @@ package com.ryan.remote.api;
  */
 public interface Server extends Endpoint {
 
+
 }

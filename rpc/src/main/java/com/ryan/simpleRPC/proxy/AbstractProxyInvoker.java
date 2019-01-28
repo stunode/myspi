@@ -39,7 +39,7 @@ public abstract class AbstractProxyInvoker<T> implements Invoker<T> {
      */
     @Override
     public Class<T> getInterface() {
-        return null;
+        return type;
     }
 
     @Override

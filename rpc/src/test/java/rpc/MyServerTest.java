@@ -3,21 +3,21 @@ package rpc;
 import com.ryan.common.serialization.FastjsonSerializer;
 import com.ryan.common.serialization.Serializer;
 import com.ryan.config.ServiceConfig;
-import com.ryan.myspi.ExtensionLoader;
-import com.ryan.simpleRPC.Protocol;
 import com.ryan.simpleRPC.ServerHandler;
-import com.ryan.simpleRPC.impl.DubboInvoker;
-import com.ryan.simpleRPC.impl.DubboProtocol;
+import com.ryan.simpleRPC.codec.DubboCodec;
 import com.ryan.simpleRPC.impl.MyClient;
 import com.ryan.simpleRPC.impl.MyHandler;
 import com.ryan.simpleRPC.impl.MyServer;
-import com.ryan.simpleRPC.impl.RPCInvocation;
-import org.junit.Assert;
+import com.ryan.simpleRPC.impl.RpcInvocation;
+import com.ryan.simpleRPC.proxy.wrapper.TestService;
+import io.netty.buffer.ByteBuf;
 import org.junit.Test;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.Socket;
-import java.util.Date;
 
 /**
  * 类名称: MyServerTest
@@ -56,14 +56,6 @@ public class MyServerTest {
 
     }
 
-    @Test
-    public void getDubboProtocol(){
-        Protocol protocol = ExtensionLoader.getExtensionLoader(Protocol.class).getDefaultExtension();
-        Assert.assertEquals(DubboProtocol.class,protocol.getClass());
-        DubboInvoker invoker = new DubboInvoker();
-        protocol.export(invoker);
-    }
-
 
     public static void main(String[] args) {
         new Thread(() -> {
@@ -71,12 +63,20 @@ public class MyServerTest {
                 Socket socket = new Socket("127.0.0.1", 8888);
                 while (true) {
                     try {
-                        RPCInvocation invocation = new RPCInvocation();
+                        RpcInvocation invocation = new RpcInvocation();
                         invocation.setMethodName("echo");
+                        invocation.setInterfaceType(TestService.class);
                         Serializer serializer = new FastjsonSerializer();
                         byte[] serialize = serializer.serialize(invocation);
-                        System.out.println(serialize.length);
-                        socket.getOutputStream().write(serialize);
+
+                        DubboCodec dubboCodec = new DubboCodec();
+                        ByteBuf encodeByteBuf = dubboCodec.encode(invocation);
+                        int length = encodeByteBuf.readableBytes();
+                        System.out.println(length);
+                        byte[] dataBytes = new byte[length];
+                        encodeByteBuf.readBytes(dataBytes);
+
+                        socket.getOutputStream().write(dataBytes);
                         Thread.sleep(2000);
                     } catch (Exception e) {
                     }

@@ -1,11 +1,10 @@
 package com.ryan.simpleRPC.codec;
-import com.ryan.common.serialization.Serializer;
-import com.ryan.myspi.ExtensionLoader;
 import com.ryan.remote.api.Codec;
 import com.ryan.remote.api.transport.CodecSupport;
 import com.ryan.simpleRPC.Invocation;
 import io.netty.buffer.ByteBuf;
-import com.ryan.simpleRPC.impl.RPCInvocation;
+import com.ryan.simpleRPC.impl.RpcInvocation;
+import io.netty.buffer.ByteBufAllocator;
 
 /**
  * 类名称: DubboCodec
@@ -20,19 +19,33 @@ public class DubboCodec implements Codec {
 
 
     @Override
-    public void encode(Object message) {
-        System.out.println(message);
+    public ByteBuf encode(Object message) {
 
+        ByteBuf byteBuf = ByteBufAllocator.DEFAULT.ioBuffer();
+        byte[] bytes = CodecSupport.getSerializer().serialize(message);
+        // 1.写入调用信息长度
+        byteBuf.writeInt(bytes.length);
+        // 2.写入调用信息
+        byteBuf.writeBytes(bytes);
+        return byteBuf;
     }
 
     @Override
     public Invocation decode(ByteBuf byteBuf) {
-        // dubbo在这里优化了协议转换
-        byte[] bytes = new byte[21];
-        // 读取数据
+
+        // 1.读取调用信息长度
+        int length = byteBuf.readInt();
+        byte[] bytes = new byte[length];
+        // 2.读取调用信息
         byteBuf.readBytes(bytes);
         // 反序列化
-        return CodecSupport.getSerializer().deserialize(RPCInvocation.class,bytes);
+        RpcInvocation invocation = null;
+        try {
+            invocation = CodecSupport.getSerializer().deserialize(RpcInvocation.class, bytes);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return invocation;
 
     }
 }

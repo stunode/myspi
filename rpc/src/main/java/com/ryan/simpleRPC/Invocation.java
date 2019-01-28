@@ -18,4 +18,8 @@ public interface Invocation {
 
     Object[] getArguments();
 
+    Invoker<?> getInvoker();
+
+    Class<?> getInterfaceType();
+
 }

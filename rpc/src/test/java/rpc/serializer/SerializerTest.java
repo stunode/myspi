@@ -1,9 +1,8 @@
 package rpc.serializer;
 
 import com.ryan.myspi.ExtensionLoader;
-import com.ryan.common.serialization.FastjsonSerializer;
 import com.ryan.common.serialization.Serializer;
-import com.ryan.simpleRPC.impl.RPCInvocation;
+import com.ryan.simpleRPC.impl.RpcInvocation;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -18,9 +17,9 @@ import org.junit.Test;
 public class SerializerTest {
 
     @Test
-    public void serializerTest(){
+    public void serializerTest() throws Exception{
 
-        RPCInvocation rpcInvocation = new RPCInvocation();
+        RpcInvocation rpcInvocation = new RpcInvocation();
         rpcInvocation.setMethodName("serializerTest");
 
 
@@ -28,7 +27,7 @@ public class SerializerTest {
 
         byte[] bytes = serializer.serialize(rpcInvocation);
 
-        RPCInvocation rpcDesrializer = serializer.deserialize(RPCInvocation.class,bytes);
+        RpcInvocation rpcDesrializer = serializer.deserialize(RpcInvocation.class,bytes);
 
         Assert.assertEquals("serializerTest",rpcDesrializer.getMethodName());
 

@@ -33,32 +33,23 @@ public class DubboProtocol implements Protocol {
     private final ConcurrentMap<String, Transporter> serverMap = new ConcurrentHashMap<>();
     private final ConcurrentMap<String, Exporter<?>> exporterMap = new ConcurrentHashMap<>();
 
-
     // 通过适配为ChannelInboundHandlerAdapter
     private ChannelHandlerAdapter requestHandler = new ChannelHandlerAdapter() {
         @Override
         public void received(Channel channel, Object message) throws Exception {
 
             if(message instanceof Invocation) {
-                Invocation inv = (Invocation) message;
-
-                String key = "";
-                if ("echo".equals(inv.getMethodName())) {
-                    key = "test";
-                }
-                Exporter<?> exporter = exporterMap.get(key);
-                Invoker<?> ink = exporter.getInvoker();
-                ink.invoke(inv);
-
-
                 // TODO 进行反射调用,需要知道调用的类、参数类型、参数值、返回值
-//                ProxyFactory proxyFactory = ExtensionLoader.getExtensionLoader(ProxyFactory.class).getDefaultExtension();
-//                TestService testService = new com.ryan.simpleRPC.proxy.wrapper.TestServiceImpl();
-//                Invoker<TestService> invoker = proxyFactory.getInvoker(testService, TestService.class);
-//                RPCInvocation invocation = new RPCInvocation();
-//                invocation.setMethodName("echo");
-//                invoker.invoke(invocation);
-//                exporterMap.get(inv.getMethodName())
+                try {
+                    Invocation inv = (Invocation) message;
+                    // msg不带invoker
+                    String key = serviceKey(inv.getInterfaceType());
+                    Exporter<?> exporter = exporterMap.get(key);
+                    Invoker<?> invoker = exporter.getInvoker();
+                    invoker.invoke(inv);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
     };
@@ -67,8 +58,8 @@ public class DubboProtocol implements Protocol {
     public <T> Exporter<T> export(Invoker<T> invoker) {
 
         // 添加invoker
-//        String key = serviceKey(invoker);
-        String key = "test";
+        String key = serviceKey(invoker.getInterface());
+        // 添加缓存
         DubboExporter<T> exporter = new DubboExporter<>(invoker,key);
         exporterMap.put(key, exporter);
         // 打开服务
@@ -93,17 +84,19 @@ public class DubboProtocol implements Protocol {
         Transporter transporter = ExtensionLoader.getExtensionLoader(Transporter.class).getDefaultExtension();
         try {
             transporter.bind(8888,requestHandler);
-
-//            transporter.bind(8888,requestHandler);
-
         } catch (Exception e) {
             e.printStackTrace();
         }
         return transporter;
     }
 
-    private <T> String serviceKey(Invoker<T> invoker) {
-        return invoker.getInterface().getName();
+    private <T> String serviceKey(Class<?> clazz) {
+        if (clazz == null) {
+            throw new IllegalArgumentException("clazz is null");
+        }
+        String[] splitNames = clazz.getName().split("\\.");
+        int length = splitNames.length;
+        return splitNames[length - 1];
     }
 
 }

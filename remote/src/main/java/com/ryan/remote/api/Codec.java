@@ -16,7 +16,7 @@ import java.io.ObjectInputStream;
 @SPI("dubboCodec")
 public interface Codec {
 
-    void encode(Object message);
+    ByteBuf encode(Object message);
 
     Object decode(ByteBuf byteBuf);
 }

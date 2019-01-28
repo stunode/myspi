@@ -2,6 +2,8 @@ package com.ryan.common.serialization;
 
 import com.alibaba.fastjson.JSON;
 import com.ryan.common.serialization.Serializer;
+import com.sun.org.apache.xml.internal.resolver.readers.ExtendedXMLCatalogReader;
+
 /**
  * 类名称: FastjsonSerializer
  * 功能描述:
@@ -18,7 +20,7 @@ public class FastjsonSerializer implements Serializer {
     }
 
     @Override
-    public <T> T deserialize(Class<T> clazz, byte[] bytes) {
+    public <T> T deserialize(Class<T> clazz, byte[] bytes) throws Exception {
         return JSON.parseObject(bytes, clazz);
     }
 

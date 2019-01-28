@@ -15,5 +15,6 @@ public interface ProxyFactory {
 
     <T> T getProxy(Invoker<T> invoker, Class<?>[] interfaces);
 
+    // 反射调用代理方法
     <T> Invoker<T> getInvoker(T proxy, Class<T> type);
 }

@@ -1,9 +1,8 @@
 package com.ryan.simpleRPC.proxy.wrapper;
 
 import com.ryan.simpleRPC.Invoker;
-import com.ryan.simpleRPC.impl.RPCInvocation;
+import com.ryan.simpleRPC.impl.RpcInvocation;
 
-import java.io.ObjectInputStream;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
@@ -26,7 +25,7 @@ public class InvokerInvocationHandler implements InvocationHandler {
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 
-        RPCInvocation invocation = new RPCInvocation(method, args);
+        RpcInvocation invocation = new RpcInvocation(method, args);
         return invoker.invoke(invocation);
     }
 

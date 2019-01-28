@@ -2,7 +2,7 @@ package com.ryan.simpleRPC.protocol;
 
 import com.ryan.simpleRPC.Invocation;
 import com.ryan.simpleRPC.Invoker;
-import com.ryan.simpleRPC.impl.RPCInvocation;
+import com.ryan.simpleRPC.impl.RpcInvocation;
 
 /**
  * 类名称: AbstractInvoker
@@ -16,11 +16,11 @@ public abstract class AbstractInvoker<T> implements Invoker<T> {
 
     public Object invoke(Invocation inv){
 
-        RPCInvocation invocation = (RPCInvocation) inv;
+        RpcInvocation invocation = (RpcInvocation) inv;
         return doInvoke(invocation);
 
     }
 
-    abstract Object doInvoke(RPCInvocation invocation);
+    abstract Object doInvoke(RpcInvocation invocation);
 
 }

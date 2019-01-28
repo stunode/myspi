@@ -4,7 +4,6 @@ import com.ryan.myspi.ExtensionLoader;
 import com.ryan.simpleRPC.Invoker;
 import com.ryan.simpleRPC.Protocol;
 import com.ryan.simpleRPC.ProxyFactory;
-import com.ryan.simpleRPC.impl.DubboInvoker;
 import com.ryan.simpleRPC.proxy.wrapper.TestService;
 
 /**
@@ -30,6 +29,7 @@ public class ServiceConfig<T> {
 
     public synchronized void doExport() {
 
+        // 通过配置或者编程的方式导出服务
         TestService testService = new com.ryan.simpleRPC.proxy.wrapper.TestServiceImpl();
         Invoker<TestService> invoker = proxyFactory.getInvoker(testService, TestService.class);
         protocol.export(invoker);

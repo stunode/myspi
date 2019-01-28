@@ -1,19 +1,20 @@
 package com.ryan.simpleRPC.impl;
 
 import com.ryan.simpleRPC.Invocation;
+import com.ryan.simpleRPC.Invoker;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
 
 /**
- * 类名称: RPCInvocation
+ * 类名称: RpcInvocation
  * 功能描述:
  * 日期:  2019/1/24 11:21
  *
  * @author: renpengfei
  * @since: JDK1.8
  */
-public class RPCInvocation implements Invocation, Serializable {
+public class RpcInvocation implements Invocation, Serializable {
 
 
     private static final long serialVersionUID = 1904229059335019972L;
@@ -24,10 +25,14 @@ public class RPCInvocation implements Invocation, Serializable {
 
     private Object[] arguments;
 
-    public RPCInvocation() {
+    private transient Invoker<?> invoker;
+
+    private Class<?> interfaceType;
+
+    public RpcInvocation() {
     }
 
-    public RPCInvocation(Method method, Object[] arguments) {
+    public RpcInvocation(Method method, Object[] arguments) {
         this.methodName = method.getName();
         this.parameterTypes = method.getParameterTypes();
         this.arguments = arguments;
@@ -54,7 +59,24 @@ public class RPCInvocation implements Invocation, Serializable {
         return arguments;
     }
 
+    @Override
+    public Invoker<?> getInvoker() {
+        return invoker;
+    }
+
     public void setArguments(Object[] arguments) {
         this.arguments = arguments;
+    }
+
+    public void setInvoker(Invoker<?> invoker) {
+        this.invoker = invoker;
+    }
+
+    public Class<?> getInterfaceType() {
+        return interfaceType;
+    }
+
+    public void setInterfaceType(Class<?> interfaceType) {
+        this.interfaceType = interfaceType;
     }
 }
